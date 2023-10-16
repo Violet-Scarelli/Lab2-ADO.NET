@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using MMABooksBusinessClasses;
 using MMABooksDBClasses;
+using MySql.Data.MySqlClient;
 
 namespace MMABooksTests
 {
@@ -19,18 +20,22 @@ namespace MMABooksTests
         }
 
         [Test]
-        public void TestCreateCustomer()
+        public void TestCreateDeleteCustomer() 
         {
-            Customer c = new Customer();
-            c.Name = "Mickey Mouse";
-            c.Address = "101 Main Street";
-            c.City = "Orlando";
-            c.State = "FL";
-            c.ZipCode = "10101";
+            //Bundled these two together for now because I was having an issue where the "create" test would create endless copies of Mickey Mouse
+			Customer c = new Customer();
+			c.Name = "Mickey Mouse";
+			c.Address = "101 Main Street";
+			c.City = "Orlando";
+			c.State = "FL";
+			c.ZipCode = "10101";
 
-            int customerID = CustomerDB.AddCustomer(c);
-            c = CustomerDB.GetCustomer(customerID);
-            Assert.AreEqual("Mickey Mouse", c.Name);
-        }
+			int customerID = CustomerDB.AddCustomer(c);
+			c = CustomerDB.GetCustomer(customerID);
+			Assert.AreEqual("Mickey Mouse", c.Name);
+
+            CustomerDB.DeleteCustomer(c);
+            Assert.IsNull(CustomerDB.GetCustomer(customerID));
+		}
     }
 }
