@@ -132,14 +132,7 @@ namespace MMABooksDBClasses
 					"SELECT LAST_INSERT_ID()";
 				MySqlCommand selectCommand =
 					new MySqlCommand(selectStatement, connection);
-				if(selectCommand.ExecuteReader().RecordsAffected == 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return selectCommand.ExecuteReader().RecordsAffected == 1;
 			}
             catch (MySqlException ex)
             {
@@ -174,26 +167,28 @@ namespace MMABooksDBClasses
 			// setup the command object
 			MySqlCommand updateCommand =
 				new MySqlCommand(updateStatement, connection);
+            updateCommand.Parameters.AddWithValue(
+                "@OldCustomerID", oldCustomer.CustomerID);
 			updateCommand.Parameters.AddWithValue(
-				"@Name", oldCustomer.Name);
+				"@OldName", oldCustomer.Name);
 			updateCommand.Parameters.AddWithValue(
-				"@Address", oldCustomer.Address);
+				"@OldAddress", oldCustomer.Address);
 			updateCommand.Parameters.AddWithValue(
-				"@City", oldCustomer.City);
+				"@OldCity", oldCustomer.City);
 			updateCommand.Parameters.AddWithValue(
-				"@State", oldCustomer.State);
+				"@OldState", oldCustomer.State);
 			updateCommand.Parameters.AddWithValue(
-				"@ZipCode", oldCustomer.ZipCode);
+				"@OldZipCode", oldCustomer.ZipCode);
 			updateCommand.Parameters.AddWithValue(
-				"@Name", newCustomer.Name);
+				"@NewName", newCustomer.Name);
 			updateCommand.Parameters.AddWithValue(
-				"@Address", newCustomer.Address);
+				"@NewAddress", newCustomer.Address);
 			updateCommand.Parameters.AddWithValue(
-				"@City", newCustomer.City);
+				"@NewCity", newCustomer.City);
 			updateCommand.Parameters.AddWithValue(
-				"@State", newCustomer.State);
+				"@NewState", newCustomer.State);
 			updateCommand.Parameters.AddWithValue(
-				"@ZipCode", newCustomer.ZipCode);
+				"@NewZipCode", newCustomer.ZipCode);
 			try
             {
 				// open the connection
@@ -205,14 +200,8 @@ namespace MMABooksDBClasses
 					"SELECT LAST_INSERT_ID()";
 				MySqlCommand selectCommand =
 					new MySqlCommand(selectStatement, connection);
-				if (selectCommand.ExecuteReader().RecordsAffected == 1)
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
+                Console.WriteLine(selectCommand.ExecuteNonQuery());
+                return selectCommand.ExecuteNonQuery() == 1;
 			}
             catch (MySqlException ex)
             {

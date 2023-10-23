@@ -37,5 +37,31 @@ namespace MMABooksTests
             CustomerDB.DeleteCustomer(c);
             Assert.IsNull(CustomerDB.GetCustomer(customerID));
 		}
+
+        [Test]
+        public void TestUpdateCustomer()
+        {
+            Customer c = new Customer();
+			c.Name = "Mickey Mouse";
+			c.Address = "101 Main Street";
+			c.City = "Orlando";
+			c.State = "FL";
+			c.ZipCode = "10101";
+			int customerID = CustomerDB.AddCustomer(c);
+			c = CustomerDB.GetCustomer(customerID);
+			Assert.AreEqual("Mickey Mouse", c.Name);
+
+			Customer n = new Customer();
+			n.Name = "Minnie Mouse";
+			n.Address = "202 Side Street";
+			n.City = "Anaheim";
+			n.State = "CA";
+			n.ZipCode = "92802";
+
+			bool updated = CustomerDB.UpdateCustomer(c, n);
+			TestContext.WriteLine(n.ToString());
+			Assert.IsTrue(updated);
+
+		}
     }
 }

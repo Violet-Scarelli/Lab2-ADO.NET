@@ -12,6 +12,7 @@ namespace MMABooksDBClasses
     {
         public static Product GetProduct(string productCode)
         {
+			Console.WriteLine(productCode);
 			MySqlConnection connection = MMABooksDB.GetConnection();
 			string selectStatement
 				= "SELECT ProductCode, Description, UnitPrice, OnHandQuantity "
@@ -20,19 +21,19 @@ namespace MMABooksDBClasses
 			MySqlCommand selectCommand =
 				new MySqlCommand(selectStatement, connection);
 			selectCommand.Parameters.AddWithValue("@ProductCode", productCode);
-
 			try
 			{
 				connection.Open();
 				MySqlDataReader prodReader =
 					selectCommand.ExecuteReader(CommandBehavior.SingleRow);
-				if (prodReader.Read())
+				if(prodReader.Read())
 				{
 					Product product = new Product();
-					product.ProductCode = prodReader["@ProductCode"].ToString();
-					product.Description = prodReader["Name"].ToString();
-					product.UnitPrice = Convert.ToDecimal(prodReader["unitPrice"]);
-					product.OnHandQuantity = (int)prodReader["City"];
+					product.ProductCode = prodReader["ProductCode"].ToString();
+					product.Description = prodReader["Description"].ToString();
+					product.UnitPrice = Convert.ToDecimal(prodReader["UnitPrice"]);
+					product.OnHandQuantity = (int)prodReader["OnHandQuantity"];
+					Console.WriteLine(product.ToString());
 					return product;
 				}
 				else
@@ -107,13 +108,12 @@ namespace MMABooksDBClasses
 			try
 			{
 				connection.Open();
-				insertCommand.ExecuteNonQuery();
-				// MySQL specific code for getting last pk value
+				//MySQL specific code for getting last pk value
 				string selectStatement =
 					"SELECT LAST_INSERT_ID()";
 				MySqlCommand selectCommand =
 					new MySqlCommand(selectStatement, connection);
-				string productCode = Convert.ToString(selectCommand.ExecuteScalar());
+				string productCode = Convert.ToString(selectCommand.ExecuteScalar())!;
 				return productCode;
 			}
 			catch (MySqlException ex)
@@ -157,14 +157,8 @@ namespace MMABooksDBClasses
 					"SELECT LAST_INSERT_ID()";
 				MySqlCommand selectCommand =
 					new MySqlCommand(selectStatement, connection);
-				if (selectCommand.ExecuteReader().RecordsAffected == 1)
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
+				Console.WriteLine(selectCommand.ExecuteNonQuery());
+				return selectCommand.ExecuteReader().RecordsAffected == 1;
 			}
 			catch (MySqlException ex)
 			{
@@ -222,15 +216,7 @@ namespace MMABooksDBClasses
 					"SELECT LAST_INSERT_ID()";
 				MySqlCommand selectCommand =
 					new MySqlCommand(selectStatement, connection);
-				int numRows = Convert.ToInt32(selectCommand.ExecuteReader());
-				if (numRows == 1)
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
+				return selectCommand.ExecuteNonQuery() == 1;
 			}
 			catch (MySqlException ex)
 			{

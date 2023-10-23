@@ -1,4 +1,4 @@
-DELIMITER $$
+usp_testingResetDataDELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `usp_testingResetData`()
 BEGIN
 
@@ -7,6 +7,9 @@ BEGIN
     set sql_safe_updates=0;
 	delete from Customers;
 	delete from Products;
+    ALTER TABLE `mmabooks`.`customers` AUTO_INCREMENT = 0 ;
+    ALTER TABLE `mmabooks`.`products` AUTO_INCREMENT = 0 ;
+
     
 INSERT Customers (CustomerID, Name, Address, City, State, ZipCode) VALUES (1, 'Molunguri, A', '1108 Johanna Bay Drive', 'Birmingham', 'AL', '35216-6909     ');
 INSERT Customers (CustomerID, Name, Address, City, State, ZipCode) VALUES (2, 'Muhinyi, Mauda', '1420 North Charles Street', 'New York', 'NY', '10044          ');

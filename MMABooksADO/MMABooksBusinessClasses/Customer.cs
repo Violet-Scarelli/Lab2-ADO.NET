@@ -30,7 +30,7 @@ namespace MMABooksBusinessClasses
 
         public override string ToString()
         {
-            return base.ToString();
+            return CustomerID + ", " + Name + ", " + Address + ", " + City + ", " + State + ", " + ZipCode;
         }
     }
 }

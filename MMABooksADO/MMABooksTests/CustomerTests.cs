@@ -4,6 +4,7 @@ using System.Text;
 
 using NUnit.Framework;
 using MMABooksBusinessClasses;
+using NuGet.Frameworks;
 
 namespace MMABooksTests
 {
@@ -77,6 +78,18 @@ namespace MMABooksTests
 			Assert.AreEqual(newCity, customer.City);
 			Assert.AreEqual(newState, customer.State);
 			Assert.AreEqual(newZipCode, customer.ZipCode);
+		}
+
+		[Test]
+		public static void TestCustomerToString()
+		{
+			Customer customer = new Customer(123, "Bob", "456 Test St", "Testburg", "Lorem Ipsum", "12345");
+			Assert.IsTrue(customer.ToString().Contains("123"));
+			Assert.IsTrue(customer.ToString().Contains("Bob"));
+			Assert.IsTrue(customer.ToString().Contains("456 Test St"));
+			Assert.IsTrue(customer.ToString().Contains("Testburg"));
+			Assert.IsTrue(customer.ToString().Contains("Lorem Ipsum"));
+			Assert.IsTrue(customer.ToString().Contains("12345"));
 		}
     }
 }
